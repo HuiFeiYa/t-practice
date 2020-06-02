@@ -1,5 +1,6 @@
-function greeter(person:string) {
-  return "Hello, " + person
-}
+// src/index.ts
 
-const user = "Jane User"
+import { foo } from 'foo'
+
+console.log(foo.name);
+foo.bar.baz();

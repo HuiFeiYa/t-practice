@@ -110,7 +110,7 @@ function big(...rest:number[]) {
 }
 
 
-// enum 枚举
+// enum 枚举属于值，如果给一个对象设置标注为枚举，也就是说这个对象只能去取枚举对象中的值
 
 /** 状态a */
 const statusA = 100;
@@ -140,3 +140,151 @@ function handleWorkStatus(status:WorkStatus) {
       break;
   }
 }
+
+// never 常用
+
+
+// 抛出异常的函数永远不会有返回值
+function error(message: string): never {
+  throw new Error(message);
+}
+
+// 空数组，而且永远是空的
+const empty: never[] = []
+
+
+// 元组 表示一个已知元素数量和类型的数组
+
+let x: [string, number];
+x = ['hello', 10]; // OK
+x = [10, 'hello']; // Error
+x = ['sdfsdf','dsfsdf']
+
+x.push(2222)
+
+
+
+// 接口
+
+// 直接描述函数类型
+interface Say {
+  (words:string) : string
+}
+
+
+interface User {
+  age?:number
+  name:string
+  readonly isMale:boolean
+  say:(words:string) => string
+  hello(num:number):boolean
+}
+
+// 传入
+interface Config {
+  width?: number;
+  [propName: string]: any;
+}
+
+
+
+
+// 泛型在函数名称后面声明泛型变量 <T>,它用于 【捕获开发者传入的参数类型] ，然后我们可以使用 T做参数类型和返回类型了。
+// 用于标注函数,类，接口 设计泛型的关键目的是在成员之间提供有意义的约束
+
+function getArrayLength <T>(arg:T[]){
+  console.log('-', arg.length)
+  return arg
+}
+
+
+
+// 索引类型 keyof T 把传入对象的属性类型取出生成一个联合类型
+function getValue<T extends object, U extends keyof T>(obj: T, key: U) {
+  return obj[key] 
+}
+
+
+const obj = {
+  name:'dd',
+  age:1
+}
+getValue(obj,'name')
+
+// 多类型约束
+
+interface First {
+  doSomething():number
+}
+interface Second {
+  doElse():string
+}
+
+class Demo <T extends First & Second> {
+  private generic!: T
+  use() {
+    this.generic.doSomething()
+    this.generic.doElse()
+  }
+}
+
+
+// 装饰器 当装饰器作为修饰类的时候，会把构造器传递进去，然后在构造函数的原型上添加值
+// 给类添加装饰器
+function addAge(constructor: Function) {
+  console.log('constructor',constructor)
+  constructor.prototype.age = 18
+}
+
+@addAge
+class Person {
+  name: string;
+  age!: number;
+  constructor() {
+    this.name = 'xiaomuzhu'
+  }
+}
+
+let person = new Person()
+console.log(person.age)
+
+
+
+// 给类中的方法添加装饰器 装饰器中的方法会接受三个参数 当前类、被装饰的函数名、是否可读写遍历
+/**
+ * 
+ *  class Person1 {
+      constructor() {
+          this.name = 'xiaomuzhu';
+      }
+      say() {
+          return 'instance method';
+      }
+      static run() {
+          return 'static method';
+      }
+    }
+    prop run
+    desc {"writable":true,"enumerable":false,"configurable":true}
+ * 
+ * 
+ */
+
+
+
+// is 关键词把参数类型缩小 如通过 test is string 来将 test 的类型缩小为 string
+
+function isString(test: any): test is string{
+  return typeof test === 'string';
+}
+
+function example(foo: number | string){
+  if(isString(foo)){
+      console.log('it is a string' + foo);
+      console.log(foo.length); // string function
+  }
+}
+example('hello world');
+
+
+const car2 = {}
