@@ -25,3 +25,4 @@ type P1<T> = {
   // 获取值中的key
   [P in keyof T] ?: T[P]
 }
+export {}
