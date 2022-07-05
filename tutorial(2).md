@@ -1,5 +1,4 @@
 # TypeScript
-
 ---
 
 # Chapter 1
